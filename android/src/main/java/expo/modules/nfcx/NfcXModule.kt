@@ -1,0 +1,10 @@
+package expo.modules.nfcx
+
+import expo.modules.kotlin.modules.Module
+import expo.modules.kotlin.modules.ModuleDefinition
+
+class NfcXModule : Module() {
+  override fun definition() = ModuleDefinition {
+    Name("NfcX")
+  }
+}

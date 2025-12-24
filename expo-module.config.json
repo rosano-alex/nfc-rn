@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["NfcXModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.nfcx.NfcXModule"]
+  }
+}
