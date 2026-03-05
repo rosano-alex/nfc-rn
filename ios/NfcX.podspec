@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name           = 'NfcX'
   s.version        = '1.0.0'
-  s.summary        = 'A sample project summary'
-  s.description    = 'A sample project description'
+  s.summary        = 'NFC reader/writer wrapping Core NFC, with tag formatting and HCE (Android)'
+  s.description    = 'NFC reader/writer wrapping Core NFC (iOS) and the Android NFC APIs, including tag formatting and host card emulation (HCE, Android-only).'
   s.author         = ''
   s.homepage       = 'https://docs.expo.dev/modules/'
   s.platforms      = {
