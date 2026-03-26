@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Static HCE service description Android requires at install time. Real AID
+  groups are normally added at runtime via `Nfc.hce.setAidGroups()`
+  (CardEmulation.registerAidsForService) or baked in statically by this
+  package's Expo config plugin — see the README. The empty groups below are
+  placeholders so the service has at least one declared category per
+  category type before any dynamic registration happens.
+-->
+<host-apdu-service xmlns:android="http://schemas.android.com/apk/res/android"
+  android:description="@string/nfcx_hce_service_label"
+  android:requireDeviceUnlock="false">
+  <aid-group android:description="@string/nfcx_hce_service_label" android:category="other">
+  </aid-group>
+</host-apdu-service>
