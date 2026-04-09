@@ -7,10 +7,7 @@ import expo.modules.kotlin.exception.CodedException
  * declared in src/NfcX.types.ts, so JS can branch on `error.code` the same
  * way on both platforms.
  */
-class NfcXException(private val errorCode: String, message: String) : CodedException(message) {
-  override val code: String
-    get() = errorCode
-
+class NfcXException(code: String, message: String) : CodedException(code, message, null) {
   companion object {
     fun unsupported() = NfcXException(
       "ERR_NFC_UNSUPPORTED",
