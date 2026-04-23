@@ -4,6 +4,17 @@
   "description": "NFC reader/writer wrapping Core NFC (iOS) and Android NFC APIs, including tag formatting and host card emulation (HCE)",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "src",
+    "ios",
+    "android",
+    "plugin/build",
+    "app.plugin.js",
+    "expo-module.config.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node internal/module_scripts/build.js",
     "clean": "node internal/module_scripts/clean.js",
@@ -23,11 +34,12 @@
   "bugs": {
     "url": "/issues"
   },
-  "author": "Alex Rosano <alex.rosano@warnermedia.com> ()",
+  "author": "Alex Rosano",
   "license": "MIT",
   "homepage": "#readme",
   "devDependencies": {
     "@babel/core": "^7.26.0",
+    "@expo/config-plugins": "^57.0.6",
     "@types/jest": "^29.2.1",
     "@types/react": "~19.1.1",
     "babel-preset-expo": "~55.0.8",
