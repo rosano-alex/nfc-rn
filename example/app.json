@@ -22,6 +22,27 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "react-native-nfc-x",
+        {
+          "ios": {
+            "nfcReaderUsageDescription": "This app uses NFC to read and write tags for testing react-native-nfc-x."
+          },
+          "android": {
+            "hce": {
+              "aidGroups": [
+                {
+                  "category": "other",
+                  "description": "react-native-nfc-x example HCE applet",
+                  "aids": ["F0010203040506"]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    ]
   }
 }
