@@ -34,6 +34,7 @@ function fmtBool(value: boolean | null): string {
 export default function App() {
   const [supported, setSupported] = useState<boolean | null>(null);
   const [enabled, setEnabled] = useState<boolean | null>(null);
+  const [hceSupported, setHceSupported] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
   const [lastTag, setLastTag] = useState<NfcTag | null>(null);
   const [log, setLog] = useState<string[]>([]);
@@ -47,6 +48,9 @@ export default function App() {
   const [transceiveCommand, setTransceiveCommand] = useState('00A404000000');
   const [transceiveResponse, setTransceiveResponse] = useState('');
 
+  const [autoRespond, setAutoRespond] = useState(true);
+  const [hceCommands, setHceCommands] = useState<string[]>([]);
+
   const appendLog = useCallback((line: string) => {
     const timestamp = new Date().toLocaleTimeString();
     setLog((prev) => [`${timestamp}  ${line}`, ...prev].slice(0, 40));
@@ -55,6 +59,7 @@ export default function App() {
   useEffect(() => {
     Nfc.isSupported().then(setSupported);
     Nfc.isEnabled().then(setEnabled);
+    Nfc.hce.isSupported().then(setHceSupported);
   }, []);
 
   useEffect(() => {
@@ -75,6 +80,26 @@ export default function App() {
       adapterSub.remove();
     };
   }, [appendLog]);
+
+  useEffect(() => {
+    const commandSub = Nfc.hce.addCommandListener(({ commandApdu, aid }) => {
+      const hex = bytesToHex(commandApdu);
+      appendLog(`HCE command${aid ? ` (aid ${aid})` : ''}: ${hex}`);
+      setHceCommands((prev) => [hex, ...prev].slice(0, 20));
+      if (autoRespond) {
+        Nfc.hce
+          .respond(new Uint8Array([0x90, 0x00]))
+          .catch((error: Error) => appendLog(`HCE respond failed: ${error.message}`));
+      }
+    });
+    const deactivatedSub = Nfc.hce.addDeactivatedListener(({ reason }) => {
+      appendLog(`HCE deactivated: ${reason}`);
+    });
+    return () => {
+      commandSub.remove();
+      deactivatedSub.remove();
+    };
+  }, [appendLog, autoRespond]);
 
   const runTagOp = useCallback(
     async (label: string, op: () => Promise<NfcTag>) => {
@@ -162,6 +187,17 @@ export default function App() {
     }
   };
 
+  const registerDemoAids = async () => {
+    try {
+      await Nfc.hce.setAidGroups([
+        { category: 'other', description: 'Demo applet', aids: ['F0010203040506'] },
+      ]);
+      appendLog('Registered demo AID group (F0010203040506)');
+    } catch (error: any) {
+      appendLog(`Register AID failed: ${error?.message ?? String(error)}`);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -170,6 +206,7 @@ export default function App() {
         <Group title="Status">
           <Row label="Supported" value={fmtBool(supported)} />
           <Row label="NFC enabled" value={fmtBool(enabled)} />
+          <Row label="HCE supported" value={fmtBool(hceSupported)} />
         </Group>
 
         <Group title="Read / Write NDEF">
@@ -206,8 +243,7 @@ export default function App() {
               <Text style={styles.tagId}>Tag {lastTag.id}</Text>
               <Text style={styles.tagMeta}>{lastTag.techTypes.join(', ')}</Text>
               <Text style={styles.tagMeta}>
-                writable: {fmtBool(lastTag.isWritable ?? null)} · maxSize:{' '}
-                {lastTag.maxSize ?? '?'}
+                writable: {fmtBool(lastTag.isWritable ?? null)} · maxSize: {lastTag.maxSize ?? '?'}
               </Text>
               <Text style={styles.tagNdef}>{describeTag(lastTag)}</Text>
             </View>
@@ -236,6 +272,22 @@ export default function App() {
           {transceiveResponse ? (
             <Text style={styles.logLine}>Response: {transceiveResponse}</Text>
           ) : null}
+        </Group>
+
+        <Group title="Host Card Emulation (Android only)">
+          <Text style={styles.hint}>
+            Core NFC has no public HCE API on iOS — this section is only functional on Android.
+          </Text>
+          <PrimaryButton title="Register Demo AID (F0010203040506)" onPress={registerDemoAids} />
+          <Row
+            label="Auto-respond 9000"
+            value={<Switch value={autoRespond} onValueChange={setAutoRespond} />}
+          />
+          {hceCommands.map((command, index) => (
+            <Text key={index} style={styles.logLine}>
+              ← {command}
+            </Text>
+          ))}
         </Group>
 
         <Group title="Log">
@@ -286,8 +338,7 @@ function PrimaryButton(props: {
         styles.button,
         props.danger && styles.buttonDanger,
         props.disabled && styles.buttonDisabled,
-      ]}
-    >
+      ]}>
       <Text style={styles.buttonText}>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -336,5 +387,6 @@ const styles = StyleSheet.create({
   tagId: { fontSize: 15, fontWeight: '700' },
   tagMeta: { fontSize: 13, color: '#666', marginTop: 2 },
   tagNdef: { fontSize: 14, marginTop: 8 },
+  hint: { fontSize: 13, color: '#888', marginBottom: 10 },
   logLine: { fontSize: 12, color: '#333', fontFamily: 'Courier', marginBottom: 4 },
 });
