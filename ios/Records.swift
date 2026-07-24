@@ -1,10 +1,11 @@
 import ExpoModulesCore
 
+// These mirror the shapes in src/NfcX.types.ts.
+
 // MARK: - NDEF
 
-/// Mirrors `NdefRecord` from src/NfcX.types.ts. `type`/`id`/`payload` travel
-/// across the bridge as base64 strings so arbitrary binary payloads survive
-/// the JS<->native boundary intact.
+/// `type`/`id`/`payload` travel as base64 so arbitrary binary payloads
+/// survive the JS<->native boundary intact.
 struct NdefRecordRecord: Record {
   @Field var tnf: Int = 0
   @Field var type: String = ""
@@ -21,14 +22,12 @@ struct NdefRecordRecord: Record {
   }
 }
 
-/// Mirrors `NdefMessage` from src/NfcX.types.ts.
 struct NdefMessageRecord: Record {
   @Field var records: [NdefRecordRecord] = []
 }
 
 // MARK: - Tag
 
-/// Mirrors `NfcTag` from src/NfcX.types.ts.
 struct NfcTagRecord: Record {
   @Field var id: String = ""
   @Field var techTypes: [String] = []
@@ -40,10 +39,9 @@ struct NfcTagRecord: Record {
 
 // MARK: - Options
 
-/// Mirrors the fields of `NfcOptions` (src/NfcX.types.ts) that are
-/// meaningful on iOS. `techList`/`readerMode` are Android-only and simply
-/// ignored here if present in the JS object — Expo's Record decoding only
-/// reads keys it declares a `@Field` for.
+/// Only the fields that matter on iOS. `techList`/`readerMode` are
+/// Android-only and get silently ignored if present — Expo's Record
+/// decoding only reads keys it declares a `@Field` for.
 struct NfcOptionsRecord: Record {
   @Field var alertMessage: String?
   @Field var successAlertMessage: String?

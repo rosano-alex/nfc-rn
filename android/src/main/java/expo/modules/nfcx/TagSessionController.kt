@@ -16,15 +16,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * Drives Android's `NfcAdapter.enableReaderMode` for both the single-shot
- * operations (read/write/format/makeReadOnly/transceive — each opens reader
- * mode, waits for exactly one tag, and disables it again) and the
- * continuous scan mode, which leaves reader mode enabled and forwards every
- * tag it sees until `stopScan()`.
+ * Drives `NfcAdapter.enableReaderMode` for both the single-shot operations
+ * (open reader mode, wait for one tag, disable it again) and continuous
+ * scan (leave it open, forward every tag until `stopScan()`).
  *
- * Unlike Core NFC's session objects, Android's reader mode has no built-in
- * "stop after first tag" behavior — that's implemented here by disabling
- * reader mode from inside the callback as soon as one tag has been handled.
+ * Unlike Core NFC's session objects, reader mode has no built-in "stop
+ * after first tag" — that's done by hand here, disabling it from inside
+ * the callback as soon as one tag's been handled.
  */
 class TagSessionController(private val appContext: AppContext) {
   private val handler = Handler(Looper.getMainLooper())
@@ -84,7 +82,7 @@ class TagSessionController(private val appContext: AppContext) {
     onScanClosed?.invoke("cancelled", null)
   }
 
-  // MARK: single-shot plumbing
+  // single-shot plumbing
 
   private suspend fun <T> runSingleShot(
     options: NfcOptionsRecord,
@@ -184,7 +182,7 @@ class TagSessionController(private val appContext: AppContext) {
     return bundle
   }
 
-  // MARK: tag operations
+  // tag operations
 
   private fun readTagInfo(tag: Tag): NfcTagResult {
     val result = NfcTagResult()

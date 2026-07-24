@@ -9,12 +9,9 @@ import {
   utf8Encode,
 } from './binary';
 
-/**
- * Pure-TypeScript NDEF (NFC Data Exchange Format) helpers: record builders,
- * record parsers, and full binary message encode/decode. None of this talks
- * to hardware — it only deals with the byte format defined by the NFC Forum
- * NDEF and RTD specs, so it runs identically on iOS, Android, and web.
- */
+// Pure-TS NDEF helpers — record builders/parsers and full message encode/decode.
+// None of this touches hardware, just the byte format from the NFC Forum
+// NDEF/RTD specs, so it works the same on iOS, Android, and web.
 
 // NFC Forum "URI Record Type Definition" abbreviation table (RTD_URI).
 const URI_PREFIXES = [
@@ -85,27 +82,19 @@ function makeRecord(
 // Record builders
 // ---------------------------------------------------------------------------
 
-/** Builds a well-known "T" (Text) record, RTD_TEXT. */
-function textRecord(
-  text: string,
-  languageCode = 'en',
-  id?: Uint8Array
-): NdefRecord {
+// RTD_TEXT
+function textRecord(text: string, languageCode = 'en', id?: Uint8Array): NdefRecord {
   const languageBytes = asciiEncode(languageCode);
   if (languageBytes.length > 63) {
     throw new RangeError('languageCode must be at most 63 bytes');
   }
   const textBytes = utf8Encode(text);
   const statusByte = languageBytes.length & 0x3f; // bit 7 = 0 => UTF-8
-  const payload = concatBytes(
-    new Uint8Array([statusByte]),
-    languageBytes,
-    textBytes
-  );
+  const payload = concatBytes(new Uint8Array([statusByte]), languageBytes, textBytes);
   return makeRecord(NdefTnf.WELL_KNOWN, RTD_TEXT, payload, id);
 }
 
-/** Builds a well-known "U" (URI) record, RTD_URI, using the standard prefix abbreviation table. */
+// RTD_URI, using the standard prefix abbreviation table
 function uriRecord(uri: string, id?: Uint8Array): NdefRecord {
   let prefixIndex = 0;
   let rest = uri;
@@ -120,16 +109,11 @@ function uriRecord(uri: string, id?: Uint8Array): NdefRecord {
   return makeRecord(NdefTnf.WELL_KNOWN, RTD_URI, payload, id);
 }
 
-/** Builds a MIME media record (TNF_MIME_MEDIA), e.g. mimeMediaRecord('application/json', bytes). */
-function mimeMediaRecord(
-  mimeType: string,
-  payload: Uint8Array,
-  id?: Uint8Array
-): NdefRecord {
+function mimeMediaRecord(mimeType: string, payload: Uint8Array, id?: Uint8Array): NdefRecord {
   return makeRecord(NdefTnf.MIME_MEDIA, asciiEncode(mimeType), payload, id);
 }
 
-/** Builds an absolute URI record (TNF_ABSOLUTE_URI) — the URI itself is the record type, payload is opaque. */
+// The URI itself is the record type here, not a well-known RTD; payload is opaque.
 function absoluteUriRecord(
   uri: string,
   payload: Uint8Array = new Uint8Array(0),
@@ -138,22 +122,16 @@ function absoluteUriRecord(
   return makeRecord(NdefTnf.ABSOLUTE_URI, asciiEncode(uri), payload, id);
 }
 
-/** Builds an external type record (TNF_EXTERNAL_TYPE), e.g. externalRecord('example.com', 'foo', bytes). */
 function externalRecord(
   domain: string,
   type: string,
   payload: Uint8Array = new Uint8Array(0),
   id?: Uint8Array
 ): NdefRecord {
-  return makeRecord(
-    NdefTnf.EXTERNAL_TYPE,
-    asciiEncode(`${domain}:${type}`),
-    payload,
-    id
-  );
+  return makeRecord(NdefTnf.EXTERNAL_TYPE, asciiEncode(`${domain}:${type}`), payload, id);
 }
 
-/** Builds an Android Application Record (AAR) — launches `packageName` when the tag is scanned on Android. */
+/** Android Application Record — launches `packageName` when the tag is scanned. */
 function androidApplicationRecord(packageName: string): NdefRecord {
   return makeRecord(
     NdefTnf.EXTERNAL_TYPE,
@@ -162,7 +140,7 @@ function androidApplicationRecord(packageName: string): NdefRecord {
   );
 }
 
-/** Builds an empty record (TNF_EMPTY) — used to erase a tag while keeping it NDEF-formatted. */
+/** Useful for erasing a tag's contents while leaving it NDEF-formatted. */
 function emptyRecord(): NdefRecord {
   return makeRecord(NdefTnf.EMPTY, new Uint8Array(0), new Uint8Array(0));
 }
@@ -246,7 +224,6 @@ const FLAG_SR = 0x10; // short record
 const FLAG_IL = 0x08; // id length present
 const FLAG_TNF = 0x07;
 
-/** Encodes an array of NdefRecords into the raw NDEF binary message format. */
 function encodeMessage(records: NdefRecord[]): Uint8Array {
   if (records.length === 0) return new Uint8Array(0);
   const chunks: Uint8Array[] = [];
@@ -281,7 +258,7 @@ function encodeMessage(records: NdefRecord[]): Uint8Array {
   return concatBytes(...chunks);
 }
 
-/** Decodes a raw NDEF binary message into an array of NdefRecords. Does not support chunked records (CF flag). */
+// Doesn't support chunked records (CF flag) — no writer we know of produces those.
 function decodeMessage(bytes: Uint8Array): NdefRecord[] {
   const records: NdefRecord[] = [];
   let offset = 0;

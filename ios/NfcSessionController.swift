@@ -1,12 +1,12 @@
 import CoreNFC
 
-/// Owns every Core NFC session this module opens. At most one session — a
-/// single-shot `NFCTagReaderSession` op, or a continuous `NFCNDEFReaderSession`
-/// scan — is ever active at a time.
+/// Owns every Core NFC session this module opens — at most one at a time,
+/// whether that's a single-shot `NFCTagReaderSession` op or a continuous
+/// `NFCNDEFReaderSession` scan.
 ///
-/// Core NFC's own APIs are delegate/completion-handler based; this wraps
-/// them in `async`/`await` so `NfcXModule`'s `AsyncFunction` bodies read
-/// top-to-bottom instead of nesting callbacks.
+/// Core NFC itself is delegate/completion-handler based; wrapping it in
+/// async/await here keeps `NfcXModule`'s function bodies flat instead of
+/// nesting callbacks three deep.
 final class NfcSessionController: NSObject {
   private let sessionQueue = DispatchQueue(label: "expo.modules.nfcx.session")
 
