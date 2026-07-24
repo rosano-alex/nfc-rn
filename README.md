@@ -1,4 +1,4 @@
-# react-native-nfc-x
+# nfc-rn
 
 NFC reader/writer for Expo/React Native, wrapping **Core NFC** on iOS and the **Android NFC APIs** — tag reading, writing, formatting, locking, raw APDU transceive, and **Host Card Emulation (HCE)**.
 
@@ -11,7 +11,7 @@ A full test app lives in [`example/`](./example) — see [Running the example ap
 ## Install
 
 ```bash
-npx expo install react-native-nfc-x
+npx expo install nfc-rn
 ```
 
 This is a native module — after installing, run `npx expo prebuild` (or `expo run:ios` / `expo run:android`, which prebuild automatically) to apply the config plugin.
@@ -25,7 +25,7 @@ Add the plugin to `app.json` / `app.config.js`. All fields are optional:
   "expo": {
     "plugins": [
       [
-        "react-native-nfc-x",
+        "nfc-rn",
         {
           "ios": {
             "nfcReaderUsageDescription": "This app uses NFC to read and write tags.",
@@ -52,7 +52,7 @@ Add the plugin to `app.json` / `app.config.js`. All fields are optional:
 ## Quick start
 
 ```ts
-import Nfc, { Ndef } from 'react-native-nfc-x';
+import Nfc, { Ndef } from 'nfc-rn';
 
 // Check support once, up front.
 const supported = await Nfc.isSupported();
@@ -96,7 +96,7 @@ Continuous scan is read-only — use the single-shot methods above for writes.
 For use cases NDEF doesn't cover (smart cards, custom applets):
 
 ```ts
-import { hexToBytes, bytesToHex } from 'react-native-nfc-x';
+import { hexToBytes, bytesToHex } from 'nfc-rn';
 
 const response = await Nfc.transceive(hexToBytes('00A4040000'));
 console.log(bytesToHex(response));

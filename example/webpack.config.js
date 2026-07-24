@@ -6,7 +6,7 @@ module.exports = async (env, argv) => {
     {
       ...env,
       babel: {
-        dangerouslyAddModulePathsToTranspile: ['react-native-nfc-x'],
+        dangerouslyAddModulePathsToTranspile: ['nfc-rn'],
       },
     },
     argv

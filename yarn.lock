@@ -8473,9 +8473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-nfc-x@workspace:.":
+"nfc-rn@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-native-nfc-x@workspace:."
+  resolution: "nfc-rn@workspace:."
   dependencies:
     "@babel/core": "npm:^7.26.0"
     "@expo/config-plugins": "npm:^57.0.6"

@@ -20,7 +20,7 @@ config.resolver.nodeModulesPaths = [
 ];
 
 config.resolver.extraNodeModules = {
-  'react-native-nfc-x': '..',
+  'nfc-rn': '..',
 };
 
 config.watchFolders = [path.resolve(__dirname, '..')];

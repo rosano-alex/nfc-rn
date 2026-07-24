@@ -3811,22 +3811,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-nfc-x-example@workspace:.":
+"nfc-rn-example@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-native-nfc-x-example@workspace:."
+  resolution: "nfc-rn-example@workspace:."
   dependencies:
     "@types/react": "npm:~19.2.2"
     expo: "npm:~57.0.8"
     react: "npm:19.2.3"
     react-native: "npm:0.86.0"
-    react-native-nfc-x: "link:.."
+    nfc-rn: "link:.."
     typescript: "npm:~6.0.3"
   languageName: unknown
   linkType: soft
 
-"react-native-nfc-x@link:..::locator=react-native-nfc-x-example%40workspace%3A.":
+"nfc-rn@link:..::locator=nfc-rn-example%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "react-native-nfc-x@link:..::locator=react-native-nfc-x-example%40workspace%3A."
+  resolution: "nfc-rn@link:..::locator=nfc-rn-example%40workspace%3A."
   languageName: node
   linkType: soft
 

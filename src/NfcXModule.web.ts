@@ -4,7 +4,7 @@ import { NfcXModuleEvents } from './NfcX.types';
 
 const UNSUPPORTED = () =>
   Promise.reject(
-    Object.assign(new Error('NFC is not supported on web by react-native-nfc-x'), {
+    Object.assign(new Error('NFC is not supported on web by nfc-rn'), {
       code: 'ERR_NFC_UNSUPPORTED',
     })
   );

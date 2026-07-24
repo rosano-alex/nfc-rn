@@ -1,5 +1,5 @@
 /**
- * Shared type definitions for react-native-nfc-x. These mirror the wire
+ * Shared type definitions for nfc-rn. These mirror the wire
  * format sent across the Expo Modules bridge, so native code on both
  * platforms produces/consumes exactly these shapes.
  */
@@ -77,9 +77,9 @@ export interface NfcOptions {
   timeoutSeconds?: number;
 }
 
-export interface WriteOptions extends NfcOptions {}
-export interface FormatOptions extends NfcOptions {}
-export interface TransceiveOptions extends NfcOptions {}
+export interface WriteOptions extends NfcOptions { }
+export interface FormatOptions extends NfcOptions { }
+export interface TransceiveOptions extends NfcOptions { }
 
 export interface TagDiscoveredEvent {
   tag: NfcTag;

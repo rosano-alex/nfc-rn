@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Nfc, { Ndef, NfcTag, bytesToHex, hexToBytes } from 'react-native-nfc-x';
+import Nfc, { Ndef, NfcTag, bytesToHex, hexToBytes } from 'nfc-rn';
 
 function describeTag(tag: NfcTag | null): string {
   if (!tag) return '';
@@ -39,7 +39,7 @@ export default function App() {
   const [lastTag, setLastTag] = useState<NfcTag | null>(null);
   const [log, setLog] = useState<string[]>([]);
 
-  const [textToWrite, setTextToWrite] = useState('Hello from react-native-nfc-x!');
+  const [textToWrite, setTextToWrite] = useState('Hello from nfc-rn!');
   const [uriToWrite, setUriToWrite] = useState('https://example.com');
 
   const [scanning, setScanning] = useState(false);
@@ -201,7 +201,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.header}>react-native-nfc-x</Text>
+        <Text style={styles.header}>nfc-rn</Text>
 
         <Group title="Status">
           <Row label="Supported" value={fmtBool(supported)} />

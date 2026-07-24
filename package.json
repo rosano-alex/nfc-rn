@@ -1,5 +1,5 @@
 {
-  "name": "react-native-nfc-x",
+  "name": "nfc-rn",
   "version": "0.1.0",
   "description": "NFC reader/writer wrapping Core NFC (iOS) and Android NFC APIs, including tag formatting and host card emulation (HCE)",
   "main": "build/index.js",
@@ -27,7 +27,7 @@
   "keywords": [
     "react-native",
     "expo",
-    "react-native-nfc-x",
+    "nfc-rn",
     "NfcX"
   ],
   "repository": "",

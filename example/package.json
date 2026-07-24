@@ -1,12 +1,12 @@
 {
-  "name": "react-native-nfc-x-example",
+  "name": "nfc-rn-example",
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
     "expo": "~57.0.8",
     "react": "19.2.3",
     "react-native": "0.86.0",
-    "react-native-nfc-x": "link:.."
+    "nfc-rn": "link:.."
   },
   "devDependencies": {
     "@types/react": "~19.2.2",

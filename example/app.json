@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-nfc-x-example",
-    "slug": "react-native-nfc-x-example",
+    "name": "nfc-rn-example",
+    "slug": "nfc-rn-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,18 +25,20 @@
     },
     "plugins": [
       [
-        "react-native-nfc-x",
+        "nfc-rn",
         {
           "ios": {
-            "nfcReaderUsageDescription": "This app uses NFC to read and write tags for testing react-native-nfc-x."
+            "nfcReaderUsageDescription": "This app uses NFC to read and write tags for testing nfc-rn."
           },
           "android": {
             "hce": {
               "aidGroups": [
                 {
                   "category": "other",
-                  "description": "react-native-nfc-x example HCE applet",
-                  "aids": ["F0010203040506"]
+                  "description": "nfc-rn example HCE applet",
+                  "aids": [
+                    "F0010203040506"
+                  ]
                 }
               ]
             }
