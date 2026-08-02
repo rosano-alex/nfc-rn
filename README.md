@@ -1,4 +1,4 @@
-# nfc-rn
+![NFC-RN](logo.jpg)
 
 NFC reader/writer for Expo/React Native, wrapping **Core NFC** on iOS and the **Android NFC APIs** — tag reading, writing, formatting, locking, raw APDU transceive, and **Host Card Emulation (HCE)**.
 
